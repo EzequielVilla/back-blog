@@ -1,0 +1,13 @@
+CREATE TABLE IF NOT EXISTS "user" (
+  "id" UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+  "userName" VARCHAR(32) NOT NULL UNIQUE,
+  "token" VARCHAR(1000) UNIQUE,
+  "authId" UUID NOT NULL,
+  FOREIGN KEY ("authId") REFERENCES auth(id),
+  "createdAt" TIMESTAMP NOT NULL DEFAULT NOW(),
+  "updatedAt" TIMESTAMP NOT NULL DEFAULT NOW(),
+  "deletedAt" TIMESTAMP
+);
+
+
+ALTER TABLE "user" ALTER COLUMN "token" TYPE VARCHAR(1000)

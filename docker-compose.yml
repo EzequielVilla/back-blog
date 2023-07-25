@@ -1,0 +1,38 @@
+version: "3.8"
+volumes:
+  database:
+    driver: local
+services:
+  postgres:
+    image: postgres:13-alpine
+    restart: unless-stopped
+    command: ["postgres", "-c", "log_statement=all"]
+    env_file: .env
+    volumes:
+      - database:/var/lib/postgresql/data
+    ports:
+      - 8008:5432
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - ./pgadmin4/servers.json:/pgadmin4/servers.json
+      - ./pgadmin4/storage:/var/lib/pgadmin/storage
+      - ./pgadmin4/passfile:/pgadmin4/passfile
+    ports:
+      - 8009:8080
+  # api:
+  #     build: .
+  #     restart: unless-stopped
+  #     working_dir: /var/www/api/
+  #     extra_hosts:
+  #         - "host.docker.internal:host-gateway"
+  #     env_file:
+  #         .env
+  #     ports:
+  #         - 3004:3080
+  #     volumes:
+  #         - .:/var/www/api/
+  #     depends_on:
+  #         - postgres
