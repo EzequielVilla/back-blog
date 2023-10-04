@@ -10,10 +10,11 @@ export class BlogController {
     private userService: UserService
   ) {}
 
-  create = async (req: RequestLogin, res: Response) => {
+  create = async (req: RequestLogin | Request, res: Response) => {
     try {
+      const reqL = req as RequestLogin;
       const { name, category, imgBase64 } = req.body;
-      const userId = req.user!.id;
+      const userId = reqL.user!.id;
       const createBlogData = { name, category, imgBase64 };
       const blogCreated = await this.blogService.create(createBlogData, userId);
       res

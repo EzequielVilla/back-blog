@@ -1,8 +1,10 @@
 import fs from "fs";
 import path from "path";
 import { dbClient } from "./pg";
+import dotenv from "dotenv";
 
 export function runMigration() {
+  dotenv.config();
   const migrationDir = path.join(__dirname, "./../migrations");
   fs.readdirSync(migrationDir).forEach((fileName) => {
     const filePath = path.join(migrationDir, fileName);

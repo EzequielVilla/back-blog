@@ -17,3 +17,5 @@ app.use("/api/v1", V1Router);
 app.listen(PORT, () => {
   console.log(`app is running on http://localhost:${PORT}`);
 });
+
+export { app };

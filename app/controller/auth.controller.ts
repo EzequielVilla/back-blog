@@ -1,9 +1,10 @@
 import { Request, Response, response } from "express";
 import { IAuthService } from "../interface/auth.interface";
 import { responseHandler } from "../../internal/lib/res/handler";
+import { AuthService } from "../service/auth.service";
 
 export class AuthController {
-  constructor(private authService: IAuthService) {}
+  constructor(private authService: AuthService) {}
 
   signUp = async (req: Request, res: Response) => {
     try {
@@ -14,6 +15,7 @@ export class AuthController {
       console.error(error.message);
       res.status(400).json(responseHandler(false, "Error during sign up"));
     }
+    console.log("esto es nuevo");
   };
   login = async (req: Request, res: Response) => {
     try {
