@@ -3,9 +3,36 @@ import chai from "chai";
 import chaiHttp from "chai-http";
 // import request from "supertest";
 import { app } from "../../../index"; // Supongo que tienes una clase que inicia tu aplicación Express
+import { dbClient } from "../../../internal/db/pg";
 
 chai.use(chaiHttp);
+process.env.NODE_ENV = "test";
 
+beforeEach((done) => {
+  //
+  dbClient.query(`
+    DELETE FROM "content";
+    DELETE FROM "comment";
+    DELETE FROM "article";
+    DELETE FROM "blog";
+    DELETE FROM "user";
+    DELETE FROM "auth";
+  `);
+  done();
+});
+
+afterEach((done) => {
+  dbClient.query(`
+    DELETE FROM "content";
+    DELETE FROM "comment";
+    DELETE FROM "article";
+    DELETE FROM "blog";
+    DELETE FROM "user";
+    DELETE FROM "auth";
+  `);
+  done();
+  //
+});
 describe("AuthController E2E Tests", () => {
   it("should create a new user", (done) => {
     chai
@@ -16,12 +43,17 @@ describe("AuthController E2E Tests", () => {
         password: "password",
         userName: "testuser",
       })
-      .end((err, res) => {
-        expect(res.status).to.equal(201);
-        expect(res.body.success).to.be.true;
-        expect(res.body.message).to.equal("User created successfully");
-        done();
-      });
+      .end(
+        (
+          err: any,
+          res: { status: any; body: { success: any; message: any } }
+        ) => {
+          expect(res.status).to.equal(201);
+          expect(res.body.success).to.be.true;
+          expect(res.body.message).to.equal("User created successfully");
+          done();
+        }
+      );
   });
   it("Should throw error creating user twice", (done) => {
     chai
@@ -41,12 +73,17 @@ describe("AuthController E2E Tests", () => {
             password: "password",
             userName: "testuser",
           })
-          .end((err, res) => {
-            expect(res.status).to.equal(400);
-            expect(res.body.success).to.be.false;
-            expect(res.body.message).to.equal("Error during sign up");
-            done();
-          });
+          .end(
+            (
+              err: any,
+              res: { status: any; body: { success: any; message: any } }
+            ) => {
+              expect(res.status).to.equal(400);
+              expect(res.body.success).to.be.false;
+              expect(res.body.message).to.equal("Error during sign up");
+              done();
+            }
+          );
       });
   });
   it("Login successful", (done) => {
@@ -58,24 +95,34 @@ describe("AuthController E2E Tests", () => {
         password: "password",
         userName: "testuser",
       })
-      .end((err, res) => {
-        expect(res.status).to.equal(201);
-        expect(res.body.success).to.be.true;
-        expect(res.body.message).to.equal("User created successfully");
-        chai
-          .request(app)
-          .post("/api/v1/auth/login")
-          .send({
-            email: "test@example.com",
-            password: "password",
-          })
-          .end((err, res) => {
-            expect(res.status).to.equal(200);
-            expect(res.body.success).to.be.true;
-            expect(res.body.message).to.equal("Login successfully");
-            done();
-          });
-      });
+      .end(
+        (
+          err: any,
+          res: { status: any; body: { success: any; message: any } }
+        ) => {
+          expect(res.status).to.equal(201);
+          expect(res.body.success).to.be.true;
+          expect(res.body.message).to.equal("User created successfully");
+          chai
+            .request(app)
+            .post("/api/v1/auth/login")
+            .send({
+              email: "test@example.com",
+              password: "password",
+            })
+            .end(
+              (
+                err: any,
+                res: { status: any; body: { success: any; message: any } }
+              ) => {
+                expect(res.status).to.equal(200);
+                expect(res.body.success).to.be.true;
+                expect(res.body.message).to.equal("Login successfully");
+                done();
+              }
+            );
+        }
+      );
   });
   it("Login throw error for wrong email or password", (done) => {
     chai
@@ -86,23 +133,33 @@ describe("AuthController E2E Tests", () => {
         password: "password",
         userName: "testuser",
       })
-      .end((err, res) => {
-        expect(res.status).to.equal(201);
-        expect(res.body.success).to.be.true;
-        expect(res.body.message).to.equal("User created successfully");
-        chai
-          .request(app)
-          .post("/api/v1/auth/login")
-          .send({
-            email: "test@example.com",
-            password: "wrongpassword",
-          })
-          .end((err, res) => {
-            expect(res.status).to.equal(400);
-            expect(res.body.success).to.be.false;
-            expect(res.body.message).to.equal("Error during login");
-            done();
-          });
-      });
+      .end(
+        (
+          err: any,
+          res: { status: any; body: { success: any; message: any } }
+        ) => {
+          expect(res.status).to.equal(201);
+          expect(res.body.success).to.be.true;
+          expect(res.body.message).to.equal("User created successfully");
+          chai
+            .request(app)
+            .post("/api/v1/auth/login")
+            .send({
+              email: "test@example.com",
+              password: "wrongpassword",
+            })
+            .end(
+              (
+                err: any,
+                res: { status: any; body: { success: any; message: any } }
+              ) => {
+                expect(res.status).to.equal(400);
+                expect(res.body.success).to.be.false;
+                expect(res.body.message).to.equal("Error during login");
+                done();
+              }
+            );
+        }
+      );
   });
 });
