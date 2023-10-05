@@ -9,9 +9,9 @@ jobs:
       postgres:
         image: postgres:13 # Choose the version you need
         env:
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_USER: postgres
-          POSTGRES_DB: postgres
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: testdb
         ports:
           - 5432:5432
     steps:
@@ -25,13 +25,17 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
       - name: migrate database
-        run: npm run sync:test
         env:
-          DBURL: "postgres://postgres:postgres@localhost:5432/postgres"
-
+          POSTGRES_HOST: localhost # Use localhost since the database is running in the same container
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: testdb
+        run: npm run sync:test
       - name: Run Mocha tests
         env:
-          DBURL: "postgres://postgres:postgres@localhost:5432/postgres"
+          DB_HOST: localhost # Use localhost since the database is running in the same container
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: testdb
         run: npm test
