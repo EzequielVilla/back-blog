@@ -25,7 +25,8 @@ jobs:
 
       - name: Install dependencies
         run: npm install
-
+      - name: migrate database
+        run: npm run sync:test.js
       - name: Run Mocha tests
         env:
           DB_HOST: localhost # Use localhost since the database is running in the same container
