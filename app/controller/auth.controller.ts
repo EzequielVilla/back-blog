@@ -15,7 +15,6 @@ export class AuthController {
       console.error(error.message);
       res.status(400).json(responseHandler(false, "Error during sign up"));
     }
-    console.log("esto es nuevo");
   };
   login = async (req: Request, res: Response) => {
     try {

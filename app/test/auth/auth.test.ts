@@ -3,36 +3,9 @@ import chai from "chai";
 import chaiHttp from "chai-http";
 // import request from "supertest";
 import { app } from "../../../index"; // Supongo que tienes una clase que inicia tu aplicación Express
-import { dbClient } from "../../../internal/db/pg";
 
 chai.use(chaiHttp);
-process.env.NODE_ENV = "test";
 
-beforeEach((done) => {
-  //
-  dbClient.query(`
-    DELETE FROM "content";
-    DELETE FROM "comment";
-    DELETE FROM "article";
-    DELETE FROM "blog";
-    DELETE FROM "user";
-    DELETE FROM "auth";
-  `);
-  done();
-});
-
-afterEach((done) => {
-  dbClient.query(`
-    DELETE FROM "content";
-    DELETE FROM "comment";
-    DELETE FROM "article";
-    DELETE FROM "blog";
-    DELETE FROM "user";
-    DELETE FROM "auth";
-  `);
-  done();
-  //
-});
 describe("AuthController E2E Tests", () => {
   it("should create a new user", (done) => {
     chai
