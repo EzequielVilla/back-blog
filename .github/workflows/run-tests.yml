@@ -27,6 +27,11 @@ jobs:
         run: npm install
 
       - name: Create test database
+        env:
+          POSTGRES_HOST: localhost # Use localhost since the database is running in the same container
+          POSTGRES_USER_TEST: postgres
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB_TEST: blog_test
         run: |
           psql -h localhost -U postgres -d postgres -c "CREATE DATABASE blog_test"
       - name: migrate database
