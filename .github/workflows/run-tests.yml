@@ -27,7 +27,7 @@ jobs:
         run: npm install
 
       - name: Create test database
-      run: |
+        run: |
           psql -h localhost -U postgres -d postgres -c "CREATE DATABASE blog_test"
       - name: migrate database
         env:
