@@ -14,11 +14,10 @@ beforeEach((done) => {
   `,
     (error, result) => {
       if (error) {
-        // Handle the error appropriately
         console.error("Error in beforeEach:", error);
       }
       console.log("DONE");
-      // Signal that the cleanup is complete
+
       done();
     }
   );
@@ -36,12 +35,9 @@ afterEach((done) => {
   `,
     (error, result) => {
       if (error) {
-        // Handle the error appropriately
         console.error("Error in afterEach:", error);
       }
       console.log("DONE");
-
-      // Signal that the cleanup is complete
       done();
     }
   );
