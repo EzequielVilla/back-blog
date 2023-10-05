@@ -17,15 +17,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
           node-version: 18 # Choose the version of Node.js you need
-
       - name: Install dependencies
         run: npm install
-
       - name: Create test database
         env:
           POSTGRES_HOST: localhost # Use localhost since the database is running in the same container
