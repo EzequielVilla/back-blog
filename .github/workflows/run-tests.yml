@@ -5,7 +5,15 @@ on: pull_request
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    services:
+      postgres:
+        image: postgres:13 # Choose the version you need
+        env:
+          POSTGRES_USER: testuser
+          POSTGRES_PASSWORD: testpassword
+          POSTGRES_DB: testdb
+        ports:
+          - 5432:5432
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -19,4 +27,9 @@ jobs:
         run: npm install
 
       - name: Run Mocha tests
+        env:
+          DB_HOST: localhost # Use localhost since the database is running in the same container
+          DB_USER: testuser
+          DB_PASSWORD: testpassword
+          DB_NAME: testdb
         run: npm test
