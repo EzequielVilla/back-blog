@@ -34,7 +34,7 @@ jobs:
         run: npm run sync:test
       - name: Run Mocha tests
         env:
-          DB_HOST: localhost # Use localhost since the database is running in the same container
+          POSTGRES_HOST: localhost # Use localhost since the database is running in the same container
           POSTGRES_USER_TEST: postgres
           POSTGRES_PASSWORD: testpassword
           POSTGRES_DB_TEST: blog_test
