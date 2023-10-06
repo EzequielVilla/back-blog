@@ -5,6 +5,7 @@ import chaiHttp from "chai-http";
 import { app } from "../../../index"; // Supongo que tienes una clase que inicia tu aplicación Express
 
 chai.use(chaiHttp);
+
 describe("AuthController E2E Tests", () => {
   it("should create a new user", (done) => {
     chai
@@ -63,9 +64,9 @@ describe("AuthController E2E Tests", () => {
       .request(app)
       .post("/api/v1/auth/signUp")
       .send({
-        email: "test@example.com",
-        password: "password",
-        userName: "testuser",
+        email: "test12@example.com",
+        password: "password12",
+        userName: "testuser12",
       })
       .end(
         (
@@ -79,8 +80,8 @@ describe("AuthController E2E Tests", () => {
             .request(app)
             .post("/api/v1/auth/login")
             .send({
-              email: "test@example.com",
-              password: "password",
+              email: "test12@example.com",
+              password: "password12",
             })
             .end(
               (
