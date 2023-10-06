@@ -3,27 +3,36 @@ import path from "path";
 import { dbClient } from "./pg";
 import dotenv from "dotenv";
 
-export function runMigration() {
+export async function runMigration() {
   dotenv.config();
   const migrationDir = path.join(__dirname, "./../migrations");
-  fs.readdirSync(migrationDir).forEach((fileName) => {
+  const files = fs.readdirSync(migrationDir);
+  const promises: Promise<boolean>[] = [];
+  for (const fileName of files) {
     const filePath = path.join(migrationDir, fileName);
     const sql = fs.readFileSync(filePath, "utf-8");
-
-    dbClient.query(sql, (err, result) => {
-      if (err) {
-        console.error(`Error executing migration: ${fileName}`);
-        console.error(err);
-      } else {
-        console.log(`Migration executed successfully: ${fileName}`);
-      }
+    const migrationPromise = new Promise<boolean>((resolve) => {
+      dbClient.query(sql, (err, result) => {
+        if (err) {
+          console.error(`Error executing migration: ${fileName}`);
+          console.error(err);
+          resolve(false);
+        } else {
+          console.log(`Migration executed successfully: ${fileName}`);
+          resolve(true);
+        }
+      });
     });
-  });
-  process.on("exit", (code) => {
-    console.log(`Script exiting with code: ${code}`);
-    // Perform any cleanup or finalization tasks here, if needed
-    // This code will run when the script is about to exit
-  });
-  // Terminate the process explicitly
-  process.exit(); // This will exit the script
+    promises.push(migrationPromise);
+  }
+  const migratedResults = await Promise.all(promises);
+  if (files.length === migratedResults.length) {
+    process.on("exit", (code) => {
+      console.log(`Script exiting with code: ${code}`);
+    });
+
+    process.exit();
+  }
 }
+
+// function executeMig() {}
