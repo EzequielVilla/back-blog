@@ -64,9 +64,9 @@ describe("AuthController E2E Tests", () => {
       .request(app)
       .post("/api/v1/auth/signUp")
       .send({
-        email: "test@example.com",
-        password: "password",
-        userName: "testuser",
+        email: "test12@example.com",
+        password: "password12",
+        userName: "testuser12",
       })
       .end(
         (
@@ -80,8 +80,8 @@ describe("AuthController E2E Tests", () => {
             .request(app)
             .post("/api/v1/auth/login")
             .send({
-              email: "test@example.com",
-              password: "password",
+              email: "test12@example.com",
+              password: "password12",
             })
             .end(
               (
