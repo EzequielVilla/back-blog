@@ -1,0 +1,39 @@
+name: Testing
+
+on: pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      POSTGRES_HOST: localhost
+      POSTGRES_USER_TEST: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB_TEST: blog_test
+      NODE_ENV: test
+    services:
+      postgres:
+        image: postgres:13
+        env:
+          POSTGRES_USER_TEST: ${{ env.POSTGRES_USER_TEST }}
+          POSTGRES_PASSWORD: ${{ env.POSTGRES_PASSWORD }}
+          POSTGRES_DB_TEST: ${{ env.POSTGRES_DB_TEST }}
+        ports:
+          - 5432:5432
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: npm install
+      - name: Create test database
+        run: |
+          export PGPASSWORD=$POSTGRES_PASSWORD
+          psql -h $POSTGRES_HOST -U $POSTGRES_USER_TEST -d postgres -c "CREATE DATABASE $POSTGRES_DB_TEST"
+      - name: Migrate database
+        run: npm run sync:test
+      - name: Run Mocha tests
+        run: npm test

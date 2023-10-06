@@ -1,4 +1,13 @@
--- CREATE TYPE programming_languages_enum AS ENUM ('c', 'c++', 'java', 'javascript', 'typescript', 'python', 'go', 'rust');
+DO $$ 
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 
+    FROM pg_type 
+    WHERE typname = 'programming_languages_enum'
+  ) THEN
+    CREATE TYPE programming_languages_enum AS ENUM ('c', 'c++', 'java', 'javascript', 'typescript', 'python', 'go', 'rust');
+  END IF;
+END $$;
 
 
 CREATE TABLE IF NOT EXISTS "blog"(

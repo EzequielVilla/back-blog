@@ -1,14 +1,15 @@
-import { NextFunction, Response } from "express";
+import { NextFunction, Response, Request } from "express";
 import { RequestLogin } from "./auth";
 import { blogProvider } from "../provider";
 
 export async function articleMiddleware(
-  req: RequestLogin,
+  req: RequestLogin | Request,
   res: Response,
   next: NextFunction
 ) {
   try {
-    const userId = req.user!.id;
+    const reqL = req as RequestLogin;
+    const userId = reqL.user!.id;
     const blogId = req.body.blogId || req.params.blogId;
     if (!blogId) return res.status(400).json({ message: "BlogId is required" });
     const blogBelongToUser =

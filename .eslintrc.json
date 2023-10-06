@@ -5,7 +5,8 @@
   },
   "parserOptions": {
     "ecmaVersion": "latest",
-    "sourceType": "module"
+    "sourceType": "module",
+    "warnOnUnsupportedTypeScriptVersion": false
   },
   "parser": "@typescript-eslint/parser",
   "plugins": [
@@ -24,4 +25,10 @@
     "@typescript-eslint/no-explicit-any": ["off"],
     "@typescript-eslint/no-non-null-assertion": ["off"]
   }
+  
+    
+    
+    
+  
+  
 }
