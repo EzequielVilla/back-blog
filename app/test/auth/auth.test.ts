@@ -5,7 +5,6 @@ import chaiHttp from "chai-http";
 import { app } from "../../../index"; // Supongo que tienes una clase que inicia tu aplicación Express
 
 chai.use(chaiHttp);
-
 describe("AuthController E2E Tests", () => {
   it("should create a new user", (done) => {
     chai
