@@ -34,5 +34,3 @@ export async function runMigration() {
     process.exit();
   }
 }
-
-// function executeMig() {}
